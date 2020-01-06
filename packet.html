@@ -24,6 +24,10 @@
         </style>
     </head>
     <body>
+        <form id="packet">
+            <input id="data" name="data">
+            <input type="submit" value="send">
+        </form>
         <table>
             <tr>
                 <td colspan="4">32bit</td>
@@ -35,10 +39,10 @@
                 <td class="sixteen">packet length</td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td id="version"></td>
+                <td id="header-length"></td>
+                <td id="service"></td>
+                <td id="packet-length"></td>
             </tr>
 
             <tr>
@@ -46,8 +50,8 @@
                 <td>flag</td>
             </tr>
             <tr>
-                <td colspan="3"></td>
-                <td></td>
+                <td colspan="3" id="identifier"></td>
+                <td id="flag"></td>
             </tr>
 
             <tr>
@@ -56,38 +60,73 @@
                 <td>checksum</td>
             </tr> 
             <tr>
-                <td colspan="2"></td>
-                <td></td>
-                <td></td>
+                <td colspan="2" id="TTL"></td>
+                <td id="protocol"></td>
+                <td id="checksum"></td>
             </tr>
 
             <tr>
                 <td colspan="4">source</td>
             </tr>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="4" id="source"></td>
             </tr>
 
             <tr>
                 <td colspan="4">destination</td>
             </tr>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="4" id="destination"></td>
             </tr>
 
             <tr>
                 <td colspan="4">option</td>
             </tr>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="4" id="option"></td>
             </tr>
 
             <tr>
                 <td colspan="4">body</td>
             </tr>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="4" id="body"></td>
             </tr>
         </table>
+        <script>
+            const form = document.getElementById("packet");
+            form.addEventListener("submit", event => {
+                event.preventDefault();
+                sendData();
+            });
+
+            const sendData = () => {
+                const xhr = new XMLHttpRequest();
+                const fd = new FormData(form);
+
+                xhr.addEventListener("load", (event) => {
+                    const json = event.target.responseText;
+                    console.log(json)
+                    const obj = JSON.parse(json);
+                    console.log(obj.version)
+                    document.getElementById("version").innerHTML = obj.version;
+                    document.getElementById("header-length").innerHTML = obj.headerlength;
+                    document.getElementById("service").innerHTML = obj.service;
+                    document.getElementById("packet-length").innerHTML = obj.packetlength;
+                    document.getElementById("identifier").innerHTML = obj.identifier;
+                    document.getElementById("flag").innerHTML = obj.flag;
+                    document.getElementById("TTL").innerHTML = obj.TTL;
+                    document.getElementById("protocol").innerHTML = obj.protocol;
+                    document.getElementById("checksum").innerHTML = obj.checksum;
+                    document.getElementById("source").innerHTML = obj.source;
+                    document.getElementById("destination").innerHTML = obj.destination;
+                    document.getElementById("option").innerHTML = obj.option;
+                    document.getElementById("body").innerHTML = obj.body;
+                });
+
+                xhr.open("POST", "packet");
+                xhr.send(fd);
+            }
+        </script>
     </body>
 </html>
