@@ -101,6 +101,9 @@
                 sendData();
             });
 
+            /**
+            * POST /packet パケットのparse結果を受け取り表示
+            */
             const sendData = () => {
                 const xhr = new XMLHttpRequest();
                 const fd = new FormData(form);
