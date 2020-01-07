@@ -28,6 +28,7 @@
             <input id="data" name="data">
             <input type="submit" value="send">
         </form>
+        <p id="protocol-name"></p>
         <table>
             <tr>
                 <td colspan="4">32bit</td>
@@ -122,6 +123,7 @@
                     document.getElementById("destination").innerHTML = obj.destination;
                     document.getElementById("option").innerHTML = obj.option;
                     document.getElementById("body").innerHTML = obj.body;
+                    document.getElementById("protocol-name").innerHTML = obj.protocolname;
                 });
 
                 xhr.open("POST", "packet");
